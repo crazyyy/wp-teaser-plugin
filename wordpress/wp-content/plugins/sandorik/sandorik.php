@@ -17,10 +17,6 @@
 global $snd_db_version;
 $snd_db_version = "1.0";
 
-
-
-
-
 register_activation_hook(__FILE__,'snd_install');
 function snd_install () {
   global $wpdb;
@@ -60,7 +56,7 @@ function get_my_product( $product_id ) {
 */
 
 
-
+/*
 //http://codex.wordpress.org/AJAX_in_Plugins
 add_action('wp_ajax_nopriv_my_qc_form', 'my_qc_form_callback');
 add_action('wp_ajax_my_qc_form','my_qc_form_callback');
@@ -87,9 +83,35 @@ function my_qc_form_callback() {
   }
   die(); // this is required to return a proper result
 }
+*/
+
+
+function ajax_form(){
+  global $wpdb;
+
+  $table_name = $wpdb->prefix . "sandorik";
+
+  $post_name = $_POST['data']['name'];
+  $post_url = $_POST['data']['url'];
+  $post_content = $_POST['data']['text'];
+
+
+  $wpdb->insert(
+    $table_name,
+      array( 'name' => $post_name, 'url' => $post_url, 'text' => $post_content ),
+      array( '%s', '%s' )
+    );
+
+    //echo something here to return a value...
+    exit(); //prevent 0 in the return
 
 
 
+
+
+}
+add_action( 'wp_ajax_ajax_form', 'ajax_form' ); //admin side
+add_action( 'wp_ajax_nopriv_ajax_form', 'ajax_form' ); //for frontend
 
 
 

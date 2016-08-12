@@ -88,7 +88,7 @@
 
 
 <?php
-
+/*
   $html = '<script>
     function qc_process(e){
       var data = {
@@ -104,7 +104,7 @@
   </script>';
 
   echo $html;
-
+*/
 ?>
 
 

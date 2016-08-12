@@ -100,3 +100,41 @@ function qc_process(e){
   });
 }
 */
+
+
+jQuery(document).on('click', '.snd-button', function(event){
+  event.preventDefault(); // stop post action
+
+  var postdata = {
+    'name' : jQuery('input[name=name]').val(),
+    'text' : jQuery('textarea[name=content]').val(),
+    'url' : jQuery('input[name=link]').val(),
+  }
+
+  jQuery.ajax({
+    type: "POST",
+    url: ajaxurl,
+    data: {
+      'action': 'ajax_form',
+      'data': postdata,
+      'cache': false
+    },
+
+    beforeSend: function(data) {
+      console.log(data);
+      console.log('before')
+    },
+
+    success: function(data){
+      console.log(data);
+      console.log('success')
+    },
+
+    error: function(data){
+      console.log(data);
+      console.log('error')
+    },
+  });
+
+
+});
