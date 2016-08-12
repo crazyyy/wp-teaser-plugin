@@ -21,3 +21,17 @@ if (typeof jQuery === 'undefined') {
   console.log('jQuery has loaded');
 }
 // Place any jQuery/helper plugins in here.
+
+jQuery(document).ready(function($) {
+  jQuery('.snd-form-container input[type=radio]').on('click', function() {
+    $('.snd-form-container input').each(function(index, el) {
+      $(this).attr('checked', false);
+    });
+    $(this).attr('checked', true);
+    var value = $(this).val();
+    $('.form-config').fadeOut('fast');
+    $('.form-config').removeClass('horizontal-left').removeClass('horizontal-right').removeClass('vertical-top').removeClass('vertical-bottom').addClass(value);
+    $('.form-config').fadeIn('slow');
+
+  })
+});

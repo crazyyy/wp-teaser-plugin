@@ -6,7 +6,7 @@
 <div class="snd-main">
 
   <div class="snd-list-blocks">
-    <h6>Blocks <button class="snd-button snd-add">add block</button></h6>
+    <h6 class="box-title">Blocks <button class="snd-button snd-add"><i class="fa fa-plus-circle" aria-hidden="true"></i></button></h6>
     <table>
       <tr>
         <th>
@@ -43,28 +43,29 @@
 
 
   <div class="snd-form-container">
-    <h6>Block Options</h6>
+    <h6 class="box-title">Block Options <button class="snd-button snd-cancel"><i class="fa fa-ban" aria-hidden="true"></i></button></h6>
     <form action="">
       <input type="text" class="full-input" value="Name ID">
       <label class="half-input">
-        <input type="radio" checked name="vertical-top" value="vertical-top">
+        <input type="radio" checked name="vertical-top" value="vertical-top">Vertical Top
       </label>
       <label class="half-input">
-        <input type="radio" name="vertical-bottom" value="vertical-bottom">
+        <input type="radio" name="vertical-bottom" value="vertical-bottom">Vertical Иottom
       </label>
       <label class="half-input">
-        <input type="radio" name="horizontal-right" value="horizontal-right">
+        <input type="radio" name="horizontal-right" value="horizontal-right">Horizontal Right
       </label>
       <label class="half-input">
-        <input type="radio" name="horizontal-left" value="horizontal-left">
+        <input type="radio" name="horizontal-left" value="horizontal-left">Horizontal Left
       </label>
-      <div class="form-config">
+      <div class="form-config horizontal-left">
         <div class="snd-image">
           <img src="" alt="">
         </div>
-        <input type="text" name="link" placeholder="sitename">
-        <textarea name="content" id="" cols="30" rows="10">Lorem ipsum dolor sit amet.</textarea>
+        <input type="text" name="link" placeholder="teaser uri">
+        <textarea name="content" id="content" placeholder="Lorem ipsum dolor sit amet."></textarea>
       </div>
+      <button class="full-input snd-button snd-submitt"><i class="fa fa-check-circle" aria-hidden="true"></i></button>
     </form>
   </div><!-- /.snd-form-container -->
 
