@@ -35,3 +35,68 @@ jQuery(document).ready(function($) {
 
   })
 });
+
+/*
+jQuery(document).ready(function() {
+
+  jQuery(".snd-submit").click(function() {
+    var name = jQuery("#dname").val();
+    jQuery.ajax({
+      type: 'POST', // Adding Post method
+      url: MyAjax.ajaxurl, // Including ajax file
+      data: {
+        "action": "post_word_count",
+        "dname": name
+      }, // Sending data dname to post_word_count function.
+      success: function(data) { // Show returned data using the function.
+        alert(data);
+      }
+    });
+  });
+
+});
+
+*/
+/*
+(function($) {
+  $(document).ready(function() {
+    $('.snd-submit').click(function() {
+      $.post(
+        PT_Ajax.ajaxurl, {
+          // wp ajax action
+          action: 'ajax-inputtitleSubmit',
+
+          // vars
+          name: $('input[name=name]').val(),
+          link: $('input[name=link]').val(),
+          content: $('textarea').val(),
+          type: $("input:checked").val(),
+
+          // send the nonce along with the request
+          nextNonce: PT_Ajax.nextNonce
+        },
+        function(response) {
+          console.log(response);
+        }
+      );
+      return false;
+    });
+
+  });
+})(jQuery);
+*/
+
+
+/*
+function qc_process(e){
+  var data = {
+      action: "my_qc_form",
+      name: e["name"].value,
+      email:e["email"].value,
+      message:e["message"].value
+  };
+  jQuery.post("'.admin_url("admin-ajax.php").'", data, function(response) {
+      jQuery("#qc_form").html(response);
+  });
+}
+*/
