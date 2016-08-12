@@ -1,5 +1,5 @@
 /* if work with html set TRUE, else - FALSE */
-var htmlOWp = true,
+var htmlOWp = false,
   // set wordpress template folder
   wpThemeName = 'sandorik',
   // and set wordpress domain
