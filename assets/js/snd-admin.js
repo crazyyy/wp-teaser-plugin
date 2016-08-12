@@ -102,39 +102,63 @@ function qc_process(e){
 */
 
 
-jQuery(document).on('click', '.snd-button', function(event){
+jQuery(document).on('click', '.snd-button', function(event) {
   event.preventDefault(); // stop post action
 
   var postdata = {
-    'name' : jQuery('input[name=name]').val(),
-    'text' : jQuery('textarea[name=content]').val(),
-    'url' : jQuery('input[name=link]').val(),
+    'name': jQuery('input[name=name]').val(),
+    'text': jQuery('textarea[name=content]').val(),
+    'url': jQuery('input[name=link]').val(),
   }
 
   jQuery.ajax({
     type: "POST",
     url: ajaxurl,
     data: {
-      'action': 'ajax_form',
+      'action': 'snd_form_add',
       'data': postdata,
       'cache': false
     },
 
     beforeSend: function(data) {
-      console.log(data);
-      console.log('before')
+      // console.log('before')
     },
 
-    success: function(data){
-      console.log(data);
+    success: function(data) {
+      var ID = data;
+      var newRow = '<tr class="newest"><td>' + ID + ' ' + postdata.name + '</td><td></td><td><button class="snd-button snd-edit" title="edit ' + postdata.name + '" data-id="' + ID + '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td><td><button class="snd-button snd-remove" title="remove ' + postdata.name + '" data-id="' + ID + '"><i class="fa fa-trash" aria-hidden="true"></i></button></td></tr>';
+      jQuery('.snd-list-blocks table').append(newRow);
       console.log('success')
     },
 
-    error: function(data){
-      console.log(data);
-      console.log('error')
+    error: function(data) {
+      // console.log('error')
     },
   });
 
 
+});
+
+
+
+jQuery(document).ready(function($) {
+  $('#upload-btn').click(function(e) {
+    e.preventDefault();
+
+    var image = wp.media({
+        title: 'Upload Image',
+        // mutiple: true if you want to upload multiple files at once
+        multiple: false
+      }).open()
+      .on('select', function(e) {
+        // This will return the selected image from the Media Uploader, the result is an object
+        var uploaded_image = image.state().get('selection').first();
+        // We convert uploaded_image to a JSON object to make accessing it easier
+        // Output to the console uploaded_image
+        console.log(uploaded_image);
+        var image_url = uploaded_image.toJSON().url;
+        // Let's assign the url value to the input field
+        $('#image_url').val(image_url);
+      });
+  });
 });

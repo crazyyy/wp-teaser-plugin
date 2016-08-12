@@ -75,9 +75,10 @@
       <label class="half-input">
         <input type="radio" name="horizontal-left" value="horizontal-left">Horizontal Left
       </label>
-      <div class="form-config horizontal-left">
+      <div class="form-config vertical-top">
         <div class="snd-image">
-          <img src="" alt="">
+          <input type="text" name="image_url" id="image_url" class="image-link">
+          <input type="button" name="upload-btn" id="upload-btn" class="image-upload" style="background-image: url(http://wp-plugin.dev/wp-content/uploads/2016/08/unnamed-file.jpg);">
         </div>
         <input type="text" name="link" placeholder="teaser uri">
         <textarea name="content" id="content" placeholder="Lorem ipsum dolor sit amet."></textarea>
@@ -85,28 +86,6 @@
       <button class="full-input snd-button snd-submit"><i class="fa fa-check-circle" aria-hidden="true"></i></button>
     </form>
   </div><!-- /.snd-form-container -->
-
-
-<?php
-/*
-  $html = '<script>
-    function qc_process(e){
-      var data = {
-          action: "my_qc_form",
-          name: e["name"].value,
-          email:e["email"].value,
-          message:e["message"].value
-      };
-      jQuery.post("'.admin_url("admin-ajax.php").'", data, function(response) {
-          jQuery("#qc_form").html(response);
-      });
-    }
-  </script>';
-
-  echo $html;
-*/
-?>
-
 
 
 </div><!-- /.snd-main -->

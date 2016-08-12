@@ -12,11 +12,11 @@
  * License URI: http://www.gnu.org/licenses/gpl-3.0
 */
 
-
+/** First Time Init */
 
 global $snd_db_version;
 $snd_db_version = "1.0";
-
+/** install plugin, create new DB */
 register_activation_hook(__FILE__,'snd_install');
 function snd_install () {
   global $wpdb;
@@ -41,52 +41,15 @@ function snd_install () {
       require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
       dbDelta($sql);
-      add_option("snddb_version", $snd_db_version);
+
+      add_option("snd_db_version", $snd_db_version);
    }
 }
 
-/*
-function get_my_product( $product_id ) {
-    global $wpdb;
-    $table_name = $wpdb->get_blog_prefix() . 'my_products';
-
-    $product = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE `id` = %d LIMIT 1;", $product_id ) );
-    return $product;
-}
-*/
-
-
-/*
-//http://codex.wordpress.org/AJAX_in_Plugins
-add_action('wp_ajax_nopriv_my_qc_form', 'my_qc_form_callback');
-add_action('wp_ajax_my_qc_form','my_qc_form_callback');
-function my_qc_form_callback() {
-  global $wpdb; // this is how you get access to the database
-
-  $table_name = $wpdb->prefix . "sandorik";
-
-  $name = $_POST['name'];
-  $email = $_POST['email'];
-  $message = $_POST['message'];
-  $rows_affected = $wpdb->insert( $table_name, array(
-    'id' => null,
-    'time' => current_time('mysql'),
-    'name' => $name,
-    'email' => $email,
-    'message' => $message
-  ));
-
-  if($rows_affected==1){
-    echo "Your message was sent.";
-  } else {
-    echo "Error, try again later.";
-  }
-  die(); // this is required to return a proper result
-}
-*/
-
-
-function ajax_form(){
+/** Submit Functions */
+add_action( 'wp_ajax_snd_form_add', 'snd_form_add' ); //admin side
+add_action( 'wp_ajax_nopriv_snd_form_add', 'snd_form_add' ); //for frontend
+function snd_form_add(){
   global $wpdb;
 
   $table_name = $wpdb->prefix . "sandorik";
@@ -95,42 +58,38 @@ function ajax_form(){
   $post_url = $_POST['data']['url'];
   $post_content = $_POST['data']['text'];
 
-
-  $wpdb->insert(
+  $insert_row = $wpdb->insert(
     $table_name,
-      array( 'name' => $post_name, 'url' => $post_url, 'text' => $post_content ),
+      array(
+        'name' => $post_name,
+        'url' => $post_url,
+        'text' => $post_content,
+        'time' => current_time('mysql')
+      ),
       array( '%s', '%s' )
-    );
+  );
 
-    //echo something here to return a value...
-    exit(); //prevent 0 in the return
+  if ( $insert_row == 1 ){
+    $response_status = "true";
+  } else {
+    $response_status = "ok";
+  }
 
-
-
-
-
+  echo $wpdb->insert_id;
+  exit(); //prevent 0 in the return
 }
-add_action( 'wp_ajax_ajax_form', 'ajax_form' ); //admin side
-add_action( 'wp_ajax_nopriv_ajax_form', 'ajax_form' ); //for frontend
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+add_action( 'admin_enqueue_scripts', 'sandorik_media_files' );
+function sandorik_media_files() {
+  wp_enqueue_media();
+}
 
 add_action('admin_menu', 'sandorik_options');
 function sandorik_options() {
-  add_menu_page( 'Teasers', 'Teasers', 'edit_posts', 'sandorik', 'sandorik_options_page', '', 24);
+  add_menu_page( 'Sandorik', 'Sandorik', 'edit_posts', 'sandorik', 'sandorik_options_page', '', 24);
 }
 
 add_action( 'admin_enqueue_scripts', 'load_sandorik_admin_files' );
@@ -144,7 +103,6 @@ function load_sandorik_admin_files() {
   wp_register_script( 'sandorik_admin_scripts', plugin_dir_url( __FILE__ ) . 'js/snd-admin.js', false, '1.0.0' );
   wp_enqueue_script( 'sandorik_admin_scripts' );
 
-  wp_localize_script( 'inkthemes', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php')));
 }
 
 function sandorik_options_page() {
