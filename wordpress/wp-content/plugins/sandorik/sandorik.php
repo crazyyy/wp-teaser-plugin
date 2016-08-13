@@ -29,12 +29,14 @@ function snd_install () {
 
     $sql = "CREATE TABLE " . $table_name . " (
       id mediumint(9) NOT NULL AUTO_INCREMENT,
+      name text NOT NULL,
+      url text NOT NULL,
+      text text NOT NULL,
+      image text NOT NULL,
+      type text NOT NULL,
       time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
       views smallint(5) NOT NULL,
       clicks smallint(5) NOT NULL,
-      name tinytext NOT NULL,
-      text text NOT NULL,
-      url VARCHAR(55) NOT NULL,
       UNIQUE KEY id (id)
       ) " . $charset_collate . ";";
 
@@ -57,6 +59,8 @@ function snd_form_add(){
   $post_name = $_POST['data']['name'];
   $post_url = $_POST['data']['url'];
   $post_content = $_POST['data']['text'];
+  $post_image = $_POST['data']['image'];
+  $post_type = $_POST['data']['type'];
 
   $insert_row = $wpdb->insert(
     $table_name,
@@ -64,6 +68,8 @@ function snd_form_add(){
         'name' => $post_name,
         'url' => $post_url,
         'text' => $post_content,
+        'image' => $post_image,
+        'type' => $post_type,
         'time' => current_time('mysql')
       ),
       array( '%s', '%s' )
@@ -72,10 +78,56 @@ function snd_form_add(){
   if ( $insert_row == 1 ){
     $response_status = "true";
   } else {
-    $response_status = "ok";
+    $response_status = "false";
   }
 
   echo $wpdb->insert_id;
+  exit(); //prevent 0 in the return
+}
+/** Remove Row From DB Function */
+add_action( 'wp_ajax_snd_form_remove', 'snd_form_remove' ); //admin side
+add_action( 'wp_ajax_nopriv_snd_form_remove', 'snd_form_remove' ); //for frontend
+function snd_form_remove(){
+  global $wpdb;
+
+  $table_name = $wpdb->prefix . "sandorik";
+
+  $post_id = $_POST['data']['id'];
+
+  $remove_row = $wpdb->delete(
+    $table_name,
+      array(
+        'id' => $post_id
+      ),
+      array( '%d' )
+  );
+
+  if ( $remove_row == 1 ){
+    $remove_status = "true";
+  } else {
+    $remove_status = "false";
+  }
+  echo $remove_status;
+  exit(); //prevent 0 in the return
+}
+
+/** Remove Row From DB Function */
+add_action( 'wp_ajax_snd_form_edit', 'snd_form_edit' ); //admin side
+add_action( 'wp_ajax_nopriv_snd_form_edit', 'snd_form_edit' ); //for frontend
+function snd_form_edit(){
+  global $wpdb;
+
+  $table_name = $wpdb->prefix . "sandorik";
+
+  $post_id = $_POST['data']['id'];
+
+  $results = $wpdb->get_results("SELECT name, url, text, image, type, time, views, clicks FROM $table_name WHERE id = " . $post_id . " ");
+
+  if (!$results) {
+    echo "Not found in DB\n";
+  }
+
+  echo json_encode($results[0]);
   exit(); //prevent 0 in the return
 }
 

@@ -134,6 +134,9 @@
 
       margin: 0 0 10px;
     }
+    // .block-type {
+    //   display: none;
+    // }
     .form-config {
       float: left;
 
@@ -143,9 +146,9 @@
       @extend .clearfix;
       .snd-image {
         padding: 2px;
-        .image-link {
-          display: none;
-        }
+        // .image-link {
+        //   display: none;
+        // }
         .image-upload {
           position: relative;
 

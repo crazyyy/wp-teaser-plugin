@@ -32,9 +32,7 @@
         $results = $wpdb->get_results("SELECT id, time, views, clicks, name, text, url FROM $table_name");
 
         if (!$results) {
-          echo "Ошибка DB, запрос не удался\n";
-          echo 'MySQL Error: ' . mysql_error();
-          exit;
+          echo "DB is clean\n";
         }
 
         foreach( $results as $result) { ?>
@@ -59,7 +57,7 @@
   </div><!-- /.snd-list-blocks -->
 
 
-  <div class="snd-form-container" id="qc_form">
+  <div class="snd-form-container">
     <h6 class="box-title">Block Options <button class="snd-button snd-cancel"><i class="fa fa-ban" aria-hidden="true"></i></button></h6>
     <form action="">
       <input type="text" name="name" class="full-input" value="Name ID">
@@ -75,12 +73,13 @@
       <label class="half-input">
         <input type="radio" name="horizontal-left" value="horizontal-left">Horizontal Left
       </label>
+      <input type="hidden" name="block-type" class="block-type" value="vertical-top">
       <div class="form-config vertical-top">
         <div class="snd-image">
-          <input type="text" name="image_url" id="image_url" class="image-link">
-          <input type="button" name="upload-btn" id="upload-btn" class="image-upload" style="background-image: url(http://wp-plugin.dev/wp-content/uploads/2016/08/unnamed-file.jpg);">
+          <input type="hidden" name="image_url" id="image_url" class="image-link">
+          <input type="button" name="upload-btn" id="upload-btn" class="image-upload">
         </div>
-        <input type="text" name="link" placeholder="teaser uri">
+        <input type="text" name="link" placeholder="http://wp-plugin.dev/">
         <textarea name="content" id="content" placeholder="Lorem ipsum dolor sit amet."></textarea>
       </div>
       <button class="full-input snd-button snd-submit"><i class="fa fa-check-circle" aria-hidden="true"></i></button>
