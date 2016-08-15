@@ -93,7 +93,7 @@
 
 .snd-form-container {
   float: right;
-
+display: none;
   box-sizing: border-box;
   width: 40%;
   padding-left: 10px;
@@ -134,9 +134,6 @@
 
       margin: 0 0 10px;
     }
-    // .block-type {
-    //   display: none;
-    // }
     .form-config {
       float: left;
 
@@ -146,9 +143,6 @@
       @extend .clearfix;
       .snd-image {
         padding: 2px;
-        // .image-link {
-        //   display: none;
-        // }
         .image-upload {
           position: relative;
 

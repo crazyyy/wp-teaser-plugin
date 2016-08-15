@@ -9,7 +9,13 @@
 ?>
 
 <?php if ( is_active_sidebar( 'sidebar-1' )  ) : ?>
-	<aside id="secondary" class="sidebar widget-area" role="complementary">
-		<?php dynamic_sidebar( 'sidebar-1' ); ?>
-	</aside><!-- .sidebar .widget-area -->
+  <aside id="secondary" class="sidebar widget-area" role="complementary">
+
+
+    <?php echo do_shortcode("[sandorik id=22,23,25]"); ?>
+
+
+    <?php dynamic_sidebar( 'sidebar-1' ); ?>
+  </aside><!-- .sidebar .widget-area -->
 <?php endif; ?>
+s

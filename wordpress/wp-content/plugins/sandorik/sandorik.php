@@ -12,8 +12,30 @@
  * License URI: http://www.gnu.org/licenses/gpl-3.0
 */
 
-/** First Time Init */
+/** Theme Initialisation */
+add_action( 'admin_enqueue_scripts', 'sandorik_media_files' );
+function sandorik_media_files() {
+  wp_enqueue_media();
+}
 
+add_action('admin_menu', 'sandorik_options');
+function sandorik_options() {
+  add_menu_page( 'Sandorik', 'Sandorik', 'edit_posts', 'sandorik', 'sandorik_options_page', '', 24);
+}
+
+add_action( 'admin_enqueue_scripts', 'load_sandorik_admin_files' );
+function load_sandorik_admin_files() {
+  wp_register_style( 'sandorik_admin_styles', plugin_dir_url( __FILE__ ) . 'css/snd-admin.css', false, '1.0.0' );
+  wp_enqueue_style( 'sandorik_admin_styles' );
+
+  wp_register_script( 'jquery', plugin_dir_url( __FILE__ ) . 'js/jquery.js', false, '1.12.4' );
+  wp_enqueue_script( 'jquery' );
+
+  wp_register_script( 'sandorik_admin_scripts', plugin_dir_url( __FILE__ ) . 'js/snd-admin.js', false, '1.0.0' );
+  wp_enqueue_script( 'sandorik_admin_scripts' );
+}
+
+/** First Time Init */
 global $snd_db_version;
 $snd_db_version = "1.0";
 /** install plugin, create new DB */
@@ -130,32 +152,81 @@ function snd_form_edit(){
   echo json_encode($results[0]);
   exit(); //prevent 0 in the return
 }
+/** Update Form Functions */
+add_action( 'wp_ajax_snd_form_update', 'snd_form_update' ); //admin side
+add_action( 'wp_ajax_nopriv_snd_form_update', 'snd_form_update' ); //for frontend
+function snd_form_update(){
+  global $wpdb;
 
+  $table_name = $wpdb->prefix . "sandorik";
 
+  $post_id = $_POST['data']['id'];
+  $post_name = $_POST['data']['name'];
+  $post_url = $_POST['data']['url'];
+  $post_content = $_POST['data']['text'];
+  $post_image = $_POST['data']['image'];
+  $post_type = $_POST['data']['type'];
 
+  $insert_row = $wpdb->update(
+    $table_name,
+      array(
+        'name' => $post_name,
+        'url' => $post_url,
+        'text' => $post_content,
+        'image' => $post_image,
+        'type' => $post_type,
+        'time' => current_time('mysql')
+      ),
+      array( 'id' => $post_id ),
+      array( '%s', '%s' )
+  );
 
-add_action( 'admin_enqueue_scripts', 'sandorik_media_files' );
-function sandorik_media_files() {
-  wp_enqueue_media();
+  if ( $insert_row == 1 ){
+    $response_status = "true";
+  } else {
+    $response_status = "false";
+  }
+
+  echo $wpdb->insert_id;
+  exit(); //prevent 0 in the return
 }
 
-add_action('admin_menu', 'sandorik_options');
-function sandorik_options() {
-  add_menu_page( 'Sandorik', 'Sandorik', 'edit_posts', 'sandorik', 'sandorik_options_page', '', 24);
+// Add Shortcode
+function sandorik_shortcode( $atts ) {
+
+  global $wpdb;
+  $table_name = $wpdb->prefix . "sandorik";
+
+  // Attributes
+  $atts = shortcode_atts(
+    array(
+      'id' => '',
+    ),
+    $atts,
+    'sandorik'
+  );
+  $ids = explode(",",$atts['id']);
+
+  for ($i=0; $i < count($ids) ; $i++) {
+
+    $results = $wpdb->get_results("SELECT name, url, text, image, type, time, views, clicks FROM $table_name WHERE id = " . $ids[$i] . " ");
+
+    if (!$results) {
+      echo "Not found in DB\n";
+    }
+
+    echo '<div class="sandorik-container">
+            <a class="sandork-href" href="' . $results[0]->url . '">
+              <img src="' . $results[0]->image . '" alt="" class="sandork-img">
+              <span class="sandork-text">' . $results[0]->text . '</span>
+            </a>
+          </div><!-- /.sandorik-container -->';
+  }
+
 }
+add_shortcode( 'sandorik', 'sandorik_shortcode' );
 
-add_action( 'admin_enqueue_scripts', 'load_sandorik_admin_files' );
-function load_sandorik_admin_files() {
-  wp_register_style( 'sandorik_admin_styles', plugin_dir_url( __FILE__ ) . 'css/snd-admin.css', false, '1.0.0' );
-  wp_enqueue_style( 'sandorik_admin_styles' );
 
-  wp_register_script( 'jquery', plugin_dir_url( __FILE__ ) . 'js/jquery.js', false, '1.12.4' );
-  wp_enqueue_script( 'jquery' );
-
-  wp_register_script( 'sandorik_admin_scripts', plugin_dir_url( __FILE__ ) . 'js/snd-admin.js', false, '1.0.0' );
-  wp_enqueue_script( 'sandorik_admin_scripts' );
-
-}
 
 function sandorik_options_page() {
   include 'sandorik-options.php';

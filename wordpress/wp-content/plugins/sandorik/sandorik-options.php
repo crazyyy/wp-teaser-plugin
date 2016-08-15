@@ -41,7 +41,7 @@
           <td><?php echo $result->id; ?> <?php echo $result->name; ?></td>
           <td>
             <span class="shortcode">
-              [sandorik <?php echo $result->id; ?> <?php echo $result->name; ?>]
+              [sandorik id="<?php echo $result->id; ?>" <?php echo $result->name; ?>]
             </span>
           </td>
           <td>
@@ -61,6 +61,7 @@
     <h6 class="box-title">Block Options <button class="snd-button snd-cancel"><i class="fa fa-ban" aria-hidden="true"></i></button></h6>
     <form action="">
       <input type="text" name="name" class="full-input" value="Name ID">
+      <input type="hidden" name="id">
       <label class="half-input">
         <input type="radio" checked name="vertical-top" value="vertical-top">Vertical Top
       </label>
