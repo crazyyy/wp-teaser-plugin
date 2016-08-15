@@ -35,6 +35,21 @@ function load_sandorik_admin_files() {
   wp_enqueue_script( 'sandorik_admin_scripts' );
 }
 
+add_action('init', 'sandorik_frontend'); // Add Scripts to wp_head
+function sandorik_frontend() {
+  if (!is_admin()) {
+
+    wp_register_style( 'sandorik_front_styles', plugin_dir_url( __FILE__ ) . 'css/snd-front.css', false, '1.0.0' );
+    wp_enqueue_style( 'sandorik_front_styles' );
+
+    //  Load footer scripts (footer.php)
+    wp_register_script('sandorik_front_scripts', get_template_directory_uri() . '/js/snd-front.js', array(), '1.0.0', true); // Custom scripts
+    wp_enqueue_script('sandorik_front_scripts'); // Enqueue it!
+  }
+}
+
+
+
 /** First Time Init */
 global $snd_db_version;
 $snd_db_version = "1.0";
@@ -201,28 +216,121 @@ function sandorik_shortcode( $atts ) {
   $atts = shortcode_atts(
     array(
       'id' => '',
+      'col' => '',
+      'fz' => '',
+      'fs' => '',
+      'fw' => '',
+      'color' => '',
+      'imgbd' => '',
+      'imgbdc' => '',
+      'bgc' => '',
+      'bd' => '',
+      'bdc' => '',
+      'pad' => '',
+      'm' => '0.5',
+      'h' => '',
     ),
     $atts,
     'sandorik'
   );
   $ids = explode(",",$atts['id']);
+  $counter = intval(count($ids));
+  $columns = intval($atts['col']);
 
-  for ($i=0; $i < count($ids) ; $i++) {
-
-    $results = $wpdb->get_results("SELECT name, url, text, image, type, time, views, clicks FROM $table_name WHERE id = " . $ids[$i] . " ");
-
-    if (!$results) {
-      echo "Not found in DB\n";
-    }
-
-    echo '<div class="sandorik-container">
-            <a class="sandork-href" href="' . $results[0]->url . '">
-              <img src="' . $results[0]->image . '" alt="" class="sandork-img">
-              <span class="sandork-text">' . $results[0]->text . '</span>
-            </a>
-          </div><!-- /.sandorik-container -->';
+  if ($atts['fz']) {
+    $fz = 'font-size: '. $atts['fz'] .'px;';
   }
 
+  if ($atts['fs']) {
+    $fs = 'font-style: '. $atts['fs'] .';';
+  }
+
+  if ($atts['fw']) {
+    $fw = 'font-weight: '. $atts['fw'] .';';
+  }
+
+  if ($atts['color']) {
+    $color = 'color: '. $atts['color'] .';';
+  }
+
+  if ($atts['imgbd']) {
+    $imgbd = 'border: '. $atts['imgbd'] .'px solid transparent;';
+  }
+
+  if ($atts['imgbdc']) {
+    $imgbdc = 'border-color: '. $atts['imgbdc'] .';';
+  }
+
+  if ($atts['bgc']) {
+    $bgc = 'background-color: '. $atts['bgc'] .';';
+  }
+
+  if ($atts['bd']) {
+    $bd = 'border: '. $atts['bd'] .'px solid transparent;';
+  }
+
+  if ($atts['bdc']) {
+    $bdc = 'border-color: '. $atts['bdc'] .';';
+  }
+
+  if ($atts['pad']) {
+    $pad = 'padding: '. $atts['bdc'] .'px;';
+  }
+
+  if ($atts['h']) {
+    $h = 'height: '. $atts['h'] .'px;';
+  }
+
+
+  $href_styles = $fz . $fs . $fw . $color;
+  $img_styles = $imgbd . $imgbdc;
+
+  echo '<div class="sandorik-container">';
+
+  if ( $columns == 0 ) {
+
+    for ($i=0; $i < $counter ; $i++) {
+      $results = $wpdb->get_results("SELECT name, url, text, image, type, time, views, clicks FROM $table_name WHERE id = " . $ids[$i] . " ");
+
+      if (!$results) {
+        echo $ids[$i] ." Not found in DB\n";
+      }
+
+      $margin = floatval($atts['m']);
+
+      $a = ($margin * 2 * $counter);
+      $b = (100 - $a);
+
+      $width = ($b/$counter);
+
+      $block_styles = 'width: '.  $width .'%; margin-left: '. $margin .'%; margin-right: '. $margin .'%;' . $bgc . $bd . $bdc . $pad . $h;
+
+      echo '
+        <a class="sandorik-item '. $results[0]->type .' sandorik-item-id-' . $ids[$i] . '" href="' . $results[0]->url . '" style="'. $block_styles . $href_styles .'">
+          <img src="' . $results[0]->image . '" alt="" class="sandork-img" style="'. $img_styles .'">
+          <span class="sandork-text">' . $results[0]->text . '</span>
+        </a><!-- /.sandorik-item -->';
+    };
+
+  } else {
+
+    for ($i=0; $i < $counter ; $i++) {
+      $results = $wpdb->get_results("SELECT name, url, text, image, type, time, views, clicks FROM $table_name WHERE id = " . $ids[$i] . " ");
+
+      if (!$results) {
+        echo $ids[$i] ." Not found in DB\n";
+      }
+
+      $block_styles = 'margin-left: .5%; margin-right: .5%;' . $bgc . $bd . $bdc . $pad . $h;
+
+      echo '
+        <a class="sandorik-item '. $results[0]->type .' sandorik-item-id-' . $ids[$i] . '" href="' . $results[0]->url . '" style="'. $block_styles . $href_styles .'">
+          <img src="' . $results[0]->image . '" alt="" class="sandork-img" style="'. $img_styles .'">
+          <span class="sandork-text">' . $results[0]->text . '</span>
+        </a><!-- /.sandorik-item -->';
+    };
+  }
+  echo '</div><!-- /.sandorik-container -->';
 }
 add_shortcode( 'sandorik', 'sandorik_shortcode' );
 
