@@ -49,6 +49,7 @@
       }
       span {
         order: 0;
+        text-align: justify;
         flex: 0 1 auto;
         align-self: auto;
       }
@@ -69,6 +70,7 @@
       span {
         order: 0;
         flex: 0 1 auto;
+        text-align: justify;
         align-self: auto;
       }
     }
@@ -81,8 +83,8 @@
       align-content: center;
       align-items: center;
       img {
-        min-width: 100px;
-        max-width: 50%;
+        // min-width: 100px;
+        // max-width: 50%;
         margin-right: 5px;
 
         order: 0;
@@ -104,8 +106,8 @@
       align-content: center;
       align-items: center;
       img {
-        min-width: 100px;
-        max-width: 50%;
+        // min-width: 100px;
+        // max-width: 50%;
         margin-left: 5px;
 
         order: 0;

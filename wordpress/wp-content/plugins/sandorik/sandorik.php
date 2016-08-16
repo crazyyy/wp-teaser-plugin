@@ -229,6 +229,7 @@ function sandorik_shortcode( $atts ) {
       'pad' => '',
       'm' => '0.5',
       'h' => '',
+      'w' => '',
     ),
     $atts,
     'sandorik'
@@ -281,6 +282,10 @@ function sandorik_shortcode( $atts ) {
     $h = 'height: '. $atts['h'] .'px;';
   }
 
+  if ($atts['w']) {
+    $w = 'width: '. $atts['w'] .'px;';
+  }
+
 
   $href_styles = $fz . $fs . $fw . $color;
   $img_styles = $imgbd . $imgbdc;
@@ -303,7 +308,13 @@ function sandorik_shortcode( $atts ) {
 
       $width = ($b/$counter);
 
-      $block_styles = 'width: '.  $width .'%; margin-left: '. $margin .'%; margin-right: '. $margin .'%;' . $bgc . $bd . $bdc . $pad . $h;
+      if ($w) {
+        $width = 'width: '. $atts['w'] .'px;';
+      } else {
+        $width = 'width: '.  ($b/$counter) .'%;';
+      }
+
+      $block_styles = $width .'margin-left: '. $margin .'%; margin-right: '. $margin .'%;' . $bgc . $bd . $bdc . $pad . $h;
 
       echo '
         <a class="sandorik-item '. $results[0]->type .' sandorik-item-id-' . $ids[$i] . '" href="' . $results[0]->url . '" style="'. $block_styles . $href_styles .'">
@@ -321,7 +332,13 @@ function sandorik_shortcode( $atts ) {
         echo $ids[$i] ." Not found in DB\n";
       }
 
-      $block_styles = 'margin-left: .5%; margin-right: .5%;' . $bgc . $bd . $bdc . $pad . $h;
+      if ($w) {
+        $width = 'width: '. $atts['w'] .'px;;margin-left:auto; margin-right:auto;';
+      } else {
+        $width = 'width: '.  ($b/$counter) .'%;margin-left: .5%; margin-right: .5%;';
+      }
+
+      $block_styles = $width . $bgc . $bd . $bdc . $pad . $h;
 
       echo '
         <a class="sandorik-item '. $results[0]->type .' sandorik-item-id-' . $ids[$i] . '" href="' . $results[0]->url . '" style="'. $block_styles . $href_styles .'">
