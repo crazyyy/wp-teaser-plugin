@@ -78,6 +78,8 @@
       <hr>
       <span class="example">[sandorik id="28" m="0.8" ]</span> - horizontal margin between teasers in %
       <hr>
+      <span class="example">[sandorik id="28" a="m" ]</span> - horizontal align - 'l' - left, 'm' - middle / center, 'r' - right  // warn, if you specify attribute 'a', previous attr 'm' will not work
+      <hr>
       <span class="example">[sandorik id="28" h="400" ]</span> - block elements height in px
       <hr>
       <span class="example">[sandorik id="28" w="400" ]</span> - block elements width in px

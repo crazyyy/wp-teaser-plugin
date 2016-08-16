@@ -230,6 +230,7 @@ function sandorik_shortcode( $atts ) {
       'm' => '0.5',
       'h' => '',
       'w' => '',
+      'a' => '',
     ),
     $atts,
     'sandorik'
@@ -286,6 +287,13 @@ function sandorik_shortcode( $atts ) {
     $w = 'width: '. $atts['w'] .'px;';
   }
 
+  if ( $atts['a'] == 'l') {
+    $margin_a = 'margin-left: 0; margin-right:auto;float:none;';
+  } else if ( $atts['a'] == 'r') {
+    $margin_a = 'margin-right: 0; margin-left:auto;float:none;';
+  } else if ( $atts['a'] == 'm') {
+    $margin_a = 'margin-right: auto; margin-left:auto;float:none;';
+  }
 
   $href_styles = $fz . $fs . $fw . $color;
   $img_styles = $imgbd . $imgbdc;
@@ -308,13 +316,20 @@ function sandorik_shortcode( $atts ) {
 
       $width = ($b/$counter);
 
+      if ($atts['a']) {
+        $margin = $margin_a;
+      } else {
+        $margin = 'margin-left: '. floatval($atts['m']) .'%; margin-right: '. floatval($atts['m']) .'%;';
+      }
+
+
       if ($w) {
         $width = 'width: '. $atts['w'] .'px;';
       } else {
         $width = 'width: '.  ($b/$counter) .'%;';
       }
 
-      $block_styles = $width .'margin-left: '. $margin .'%; margin-right: '. $margin .'%;' . $bgc . $bd . $bdc . $pad . $h;
+      $block_styles = $width . $margin . $bgc . $bd . $bdc . $pad . $h;
 
       echo '
         <a class="sandorik-item '. $results[0]->type .' sandorik-item-id-' . $ids[$i] . '" href="' . $results[0]->url . '" style="'. $block_styles . $href_styles .'">
