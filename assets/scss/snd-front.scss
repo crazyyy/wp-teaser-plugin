@@ -19,6 +19,10 @@
 }
 
 .sandorik-container {
+  display: block;
+
+  width: 100%;
+
   @extend .clearfix;
   .sandorik-item {
     font-size: 14px;
@@ -48,8 +52,9 @@
         align-self: auto;
       }
       span {
+        text-align: center;
+
         order: 0;
-        text-align: justify;
         flex: 0 1 auto;
         align-self: auto;
       }
@@ -68,9 +73,10 @@
         align-self: auto;
       }
       span {
+        text-align: center;
+
         order: 0;
         flex: 0 1 auto;
-        text-align: justify;
         align-self: auto;
       }
     }

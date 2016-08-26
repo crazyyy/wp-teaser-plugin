@@ -230,6 +230,7 @@ function sandorik_shortcode( $atts ) {
       'm' => '0.5',
       'h' => '',
       'w' => '',
+      'mw' => '',
       'a' => '',
     ),
     $atts,
@@ -287,6 +288,12 @@ function sandorik_shortcode( $atts ) {
     $w = 'width: '. $atts['w'] .'px;';
   }
 
+  if ( $atts['mw'] == 'a') {
+    $mw = 'width: '. $atts['mw'] .'px; margin-left: auto; margin-right: auto;';
+  } else {
+    $mw = 'width: 100%; margin-left: auto; margin-right: auto;';
+  }
+
   if ( $atts['a'] == 'l') {
     $margin_a = 'margin-left: 0; margin-right:auto;float:none;';
   } else if ( $atts['a'] == 'r') {
@@ -298,11 +305,16 @@ function sandorik_shortcode( $atts ) {
   $href_styles = $fz . $fs . $fw . $color;
   $img_styles = $imgbd . $imgbdc;
 
-  echo '<div class="sandorik-container">';
+   global $content;
+    ob_start();
+
+
+  echo '<!--noindex--><div class="sandorik-container" style="'. $mw .'">';
 
   if ( $columns == 0 ) {
 
     for ($i=0; $i < $counter ; $i++) {
+
       $results = $wpdb->get_results("SELECT name, url, text, image, type, time, views, clicks FROM $table_name WHERE id = " . $ids[$i] . " ");
 
       if (!$results) {
@@ -323,16 +335,18 @@ function sandorik_shortcode( $atts ) {
       }
 
 
-      if ($w) {
+      if ($mw) {
+        $width = 'width: 100%;';
+      } else if ($w) {
         $width = 'width: '. $atts['w'] .'px;';
-      } else {
+      } else  {
         $width = 'width: '.  ($b/$counter) .'%;';
       }
 
       $block_styles = $width . $margin . $bgc . $bd . $bdc . $pad . $h;
 
       echo '
-        <a class="sandorik-item '. $results[0]->type .' sandorik-item-id-' . $ids[$i] . '" href="' . $results[0]->url . '" style="'. $block_styles . $href_styles .'">
+        <a target="_blank" rel="nofollow" class="sandorik-item sandorik-item-one '. $results[0]->type .' sandorik-item-id-' . $ids[$i] . '" href="' . $results[0]->url . '" style="'. $block_styles . $href_styles .'">
           <img src="' . $results[0]->image . '" alt="" class="sandork-img" style="'. $img_styles .'">
           <span class="sandork-text">' . $results[0]->text . '</span>
         </a><!-- /.sandorik-item -->';
@@ -347,22 +361,29 @@ function sandorik_shortcode( $atts ) {
         echo $ids[$i] ." Not found in DB\n";
       }
 
-      if ($w) {
-        $width = 'width: '. $atts['w'] .'px;;margin-left:auto; margin-right:auto;';
+      if ($mw) {
+        $width = 'width: 100%; margin-left:0; margin-right:0;';
+      } else if ($w) {
+        $width = 'width: '. $atts['w'] .'px; margin-left:auto; margin-right:auto;';
       } else {
-        $width = 'width: '.  ($b/$counter) .'%;margin-left: .5%; margin-right: .5%;';
+        $width = 'width: '.  ($b/$counter) .'%; margin-left: .5%; margin-right: .5%;';
       }
 
       $block_styles = $width . $bgc . $bd . $bdc . $pad . $h;
 
       echo '
-        <a class="sandorik-item '. $results[0]->type .' sandorik-item-id-' . $ids[$i] . '" href="' . $results[0]->url . '" style="'. $block_styles . $href_styles .'">
+        <a target="_blank" rel="nofollow" class="sandorik-item  sandorik-item-two '. $results[0]->type .' sandorik-item-id-' . $ids[$i] . '" href="' . $results[0]->url . '" style="'. $block_styles . $href_styles .'">
           <img src="' . $results[0]->image . '" alt="" class="sandork-img" style="'. $img_styles .'">
           <span class="sandork-text">' . $results[0]->text . '</span>
         </a><!-- /.sandorik-item -->';
     };
   }
-  echo '</div><!-- /.sandorik-container -->';
+
+  echo '</div><!-- /.sandorik-container --><!--/noindex-->';
+
+ $output = ob_get_clean();
+ return $output;
+
 }
 add_shortcode( 'sandorik', 'sandorik_shortcode' );
 

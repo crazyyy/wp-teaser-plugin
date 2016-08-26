@@ -1,7 +1,3 @@
-<?php
-  echo '';
-?>
-
 <h1 class="snd-title">Sandorik teasers options</h1>
 <div class="snd-main">
 
@@ -83,6 +79,10 @@
       <span class="example">[sandorik id="28" h="400" ]</span> - block elements height in px
       <hr>
       <span class="example">[sandorik id="28" w="400" ]</span> - block elements width in px
+      <hr>
+      <span class="example">[sandorik id="25,23,28" mw="400" ]</span> - if 1 column block use "mw" to set main block with
+      <hr>
+      <span class="example">[sandorik id="25,23,28" mw="a" ]</span> - main block width 100%, child block width = 100%
     </div><!-- /.snd-settings -->
 
     <div class="snd-examples">
