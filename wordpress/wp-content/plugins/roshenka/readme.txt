@@ -1,4 +1,4 @@
-=== Sandorik AD manager ===
+=== Sandorik AD manager v.2 ===
 Contributors: Vitali Antoniuk
 Tags: teaser, ad, adware
 Stable tag: 1.0.0
