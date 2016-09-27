@@ -97,7 +97,7 @@ function roshenka_frontend() {
     wp_enqueue_style( 'roshenka_front_styles' );
 
     //  Load footer scripts (footer.php)
-    wp_register_script('roshenka_front_scripts', get_template_directory_uri() . '/js/roshenka-front.js', array(), '1.0.0', true); // Custom scripts
+    wp_register_script('roshenka_front_scripts', plugin_dir_url( __FILE__ ) . '/js/roshenka-front.js', array(), '1.0.0', true); // Custom scripts
     wp_enqueue_script('roshenka_front_scripts'); // Enqueue it!
   }
 }

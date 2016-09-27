@@ -43,7 +43,7 @@ function sandorik_frontend() {
     wp_enqueue_style( 'sandorik_front_styles' );
 
     //  Load footer scripts (footer.php)
-    wp_register_script('sandorik_front_scripts', get_template_directory_uri() . '/js/snd-front.js', array(), '1.0.0', true); // Custom scripts
+    wp_register_script('sandorik_front_scripts', plugin_dir_url( __FILE__ ) . '/js/snd-front.js', array(), '1.0.0', true); // Custom scripts
     wp_enqueue_script('sandorik_front_scripts'); // Enqueue it!
   }
 }
