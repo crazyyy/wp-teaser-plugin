@@ -14,6 +14,7 @@
  * Sorce: https://wp-dreams.com/articles/2014/03/creating-a-wordpress-widget-a-simple-text-widget/
 */
 
+/** create widget class */
 
 class Roshenka_Widget extends WP_Widget {
 
@@ -84,3 +85,19 @@ class Roshenka_Widget extends WP_Widget {
 }
 
 add_action( 'widgets_init', create_function('', 'return register_widget("Roshenka_Widget");') );
+
+/** work fith frontend  */
+
+/** add js and css */
+add_action('init', 'roshenka_frontend'); // Add Scripts to wp_head
+function roshenka_frontend() {
+  if (!is_admin()) {
+
+    wp_register_style( 'roshenka_front_styles', plugin_dir_url( __FILE__ ) . 'css/roshenka-front.css', false, '1.0.0' );
+    wp_enqueue_style( 'roshenka_front_styles' );
+
+    //  Load footer scripts (footer.php)
+    wp_register_script('roshenka_front_scripts', get_template_directory_uri() . '/js/roshenka-front.js', array(), '1.0.0', true); // Custom scripts
+    wp_enqueue_script('roshenka_front_scripts'); // Enqueue it!
+  }
+}
