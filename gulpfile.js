@@ -1,7 +1,7 @@
 /* if work with html set TRUE, else - FALSE */
 var htmlOWp = false,
   // set wordpress template folder
-  wpThemeName = 'sandorik',
+  wpThemeName = 'roshenka',
   // and set wordpress domain
   wpDomain = 'wp-plugin.dev';
 
