@@ -1,6 +1,6 @@
-if ( typeof roshenka_sidebar_options != 'undefined' && roshenka_sidebar_options.length > 0 ) {
-  if ( window.jQuery ) {
-    if ( roshenka_sidebar_options[0].window_load_hook ) {
+if (typeof roshenka_sidebar_options != 'undefined' && roshenka_sidebar_options.length > 0) {
+  if (window.jQuery) {
+    if (roshenka_sidebar_options[0].window_load_hook) {
       jQuery(window).load(roshenka_sidebar_init());
     } else {
       jQuery(document).ready(roshenka_sidebar_init());
@@ -13,59 +13,63 @@ if ( typeof roshenka_sidebar_options != 'undefined' && roshenka_sidebar_options.
 }
 
 function roshenka_sidebar_init() {
-  for ( var i = 0; i < roshenka_sidebar_options.length; i++ ) {
+  for (var i = 0; i < roshenka_sidebar_options.length; i++) {
     roshenka_sidebar(roshenka_sidebar_options[i]);
   }
-  jQuery(window).on('resize', function(){
-    for ( var i = 0; i < roshenka_sidebar_options.length; i++ ) {
+  jQuery(window).on('resize', function() {
+    for (var i = 0; i < roshenka_sidebar_options.length; i++) {
       roshenka_sidebar(roshenka_sidebar_options[i]);
     }
   });
-  var MutationObserver = (function(){
+  var MutationObserver = (function() {
     var prefixes = ['WebKit', 'Moz', 'O', 'Ms', ''];
-    for ( var i = 0; i < prefixes.length; i++ ) {
-      if ( prefixes[i] + 'MutationObserver' in window ) {
+    for (var i = 0; i < prefixes.length; i++) {
+      if (prefixes[i] + 'MutationObserver' in window) {
         return window[prefixes[i] + 'MutationObserver'];
       }
     }
     return false;
   }());
-  if ( roshenka_sidebar_options[0].disable_mo_api == false && MutationObserver ) {
+  if (roshenka_sidebar_options[0].disable_mo_api == false && MutationObserver) {
     roshenkaRefresh = false
     var htmlObserver = new MutationObserver(function(mutations) {
-      mutations.forEach( function(mutation) {
-        if ( roshenka_exclude_mutations_array(roshenka_sidebar_options).indexOf(mutation.target.id) == -1 && mutation.target.className.indexOf('roshenka-fixed-widget-container') == -1 ) {
+      mutations.forEach(function(mutation) {
+        if (roshenka_exclude_mutations_array(roshenka_sidebar_options).indexOf(mutation.target.id) == -1 && mutation.target.className.indexOf('roshenka-fixed-widget-container') == -1) {
           roshenkaRefresh = true;
-          //console.log('Mutation detected!');
         }
       });
-      });
-      htmlObserver.observe(document.body, {childList: true, attributes: true, attributeFilter:['style', 'class'], subtree: true});
-      setInterval(function(){
-        if ( roshenkaRefresh ) {
-          for ( var i = 0; i < roshenka_sidebar_options.length; i++ ) {
-            roshenka_sidebar(roshenka_sidebar_options[i]);
-          }
-          roshenkaRefresh = false;
+    });
+    htmlObserver.observe(document.body, {
+      childList: true,
+      attributes: true,
+      attributeFilter: ['style', 'class'],
+      subtree: true
+    });
+    setInterval(function() {
+      if (roshenkaRefresh) {
+        for (var i = 0; i < roshenka_sidebar_options.length; i++) {
+          roshenka_sidebar(roshenka_sidebar_options[i]);
         }
-      }, 300);
+        roshenkaRefresh = false;
+      }
+    }, 300);
   } else {
     console.log('MutationObserver not supported or disabled!');
-    if ( roshenka_sidebar_options[0].refresh_interval > 0 ) {
-      setInterval(function(){
-          for ( var i = 0; i < roshenka_sidebar_options.length; i++ ) {
-            roshenka_sidebar(roshenka_sidebar_options[i]);
-          }
-        }, roshenka_sidebar_options[0].refresh_interval);
+    if (roshenka_sidebar_options[0].refresh_interval > 0) {
+      setInterval(function() {
+        for (var i = 0; i < roshenka_sidebar_options.length; i++) {
+          roshenka_sidebar(roshenka_sidebar_options[i]);
+        }
+      }, roshenka_sidebar_options[0].refresh_interval);
     }
   }
 }
 
 function roshenka_exclude_mutations_array(roshenka_sidebar_options) {
   var out = new Array();
-  for ( var i = 0; i < roshenka_sidebar_options.length; i++ ) {
-    if ( roshenka_sidebar_options[i].widgets.length > 0 ) {
-      for ( var k = 0; k < roshenka_sidebar_options[i].widgets.length; k++ ) {
+  for (var i = 0; i < roshenka_sidebar_options.length; i++) {
+    if (roshenka_sidebar_options[i].widgets.length > 0) {
+      for (var k = 0; k < roshenka_sidebar_options[i].widgets.length; k++) {
         out.push(roshenka_sidebar_options[i].widgets[k]);
         out.push(roshenka_sidebar_options[i].widgets[k] + '_clone');
       }
@@ -76,15 +80,14 @@ function roshenka_exclude_mutations_array(roshenka_sidebar_options) {
 
 function roshenka_sidebar(options) {
 
-  if ( !options ) return false;
+  if (!options) return false;
 
-  if ( !options.widgets) return false;
+  if (!options.widgets) return false;
 
-  if ( options.widgets.length < 1) return false;
+  if (options.widgets.length < 1) return false;
 
-  if ( !options.sidebar) options.sidebar = 'roshenka-default-sidebar';
+  if (!options.sidebar) options.sidebar = 'roshenka-default-sidebar';
 
-  //console.log(options.sidebar + '  call');
 
   function widget() {} // widget class
 
@@ -94,16 +97,16 @@ function roshenka_sidebar(options) {
   var document_height = jQuery(document).height();
   var fixed_margin_top = options.margin_top;
 
-  if ( jQuery('#wpadminbar').length )  { // WordPress admin bar
+  if (jQuery('#wpadminbar').length) { // WordPress admin bar
     fixed_margin_top = options.margin_top + jQuery('#wpadminbar').height();
   }
 
   jQuery('.roshenka-widget-clone-' + options.sidebar).remove(); // clear fixed mode p1
 
-  for ( var i = 0; i < options.widgets.length; i++ ) {
+  for (var i = 0; i < options.widgets.length; i++) {
     widget_obj = jQuery('#' + options.widgets[i]);
-    widget_obj.css('position',''); // clear fixed mode p2
-    if ( widget_obj.attr('id') ) {
+    widget_obj.css('position', ''); // clear fixed mode p2
+    if (widget_obj.attr('id')) {
       widgets[i] = new widget();
       widgets[i].obj = widget_obj;
       widgets[i].clone = widget_obj.clone();
@@ -127,15 +130,15 @@ function roshenka_sidebar(options) {
 
   var widget_parent_container;
 
-  for ( var i = widgets.length - 1; i >= 0; i-- ) {
+  for (var i = widgets.length - 1; i >= 0; i--) {
     if (widgets[i]) {
       widgets[i].next_widgets_height = next_widgets_height;
       widgets[i].fixed_margin_bottom += next_widgets_height;
       next_widgets_height += widgets[i].height;
-      if ( !widget_parent_container ) {
+      if (!widget_parent_container) {
         widget_parent_container = widget_obj.parent();
         widget_parent_container.addClass('roshenka-fixed-widget-container');
-        widget_parent_container.css('height','');
+        widget_parent_container.css('height', '');
         widget_parent_container.height(widget_parent_container.height());
       }
     }
@@ -143,7 +146,7 @@ function roshenka_sidebar(options) {
 
   jQuery(window).off('scroll.' + options.sidebar);
 
-  for ( var i = 0; i < widgets.length; i++ ) {
+  for (var i = 0; i < widgets.length; i++) {
     if (widgets[i]) fixed_widget(widgets[i]);
   }
 
@@ -154,27 +157,29 @@ function roshenka_sidebar(options) {
     var trigger_top = widget.offset_top - widget.fixed_margin_top;
     var trigger_bottom = document_height - options.margin_bottom;
 
-    if ( options.stop_id && jQuery('#' + options.stop_id).length ) {
-            trigger_bottom = jQuery('#' + options.stop_id).offset().top - options.margin_bottom;
-        }
+    if (options.stop_id && jQuery('#' + options.stop_id).length) {
+      trigger_bottom = jQuery('#' + options.stop_id).offset().top - options.margin_bottom;
+    }
 
-    var widget_width; if ( options.width_inherit ) widget_width = 'inherit'; else widget_width = widget.obj.css('width');
+    var widget_width;
+    if (options.width_inherit) widget_width = 'inherit';
+    else widget_width = widget.obj.css('width');
 
     var style_applied_top = false;
     var style_applied_bottom = false;
     var style_applied_normal = false;
 
     jQuery(window).on('scroll.' + options.sidebar, function(event) {
-      if ( jQuery(window).width() <= options.screen_max_width || jQuery(window).height() <= options.screen_max_height ) {
-        if ( ! style_applied_normal ) {
+      if (jQuery(window).width() <= options.screen_max_width || jQuery(window).height() <= options.screen_max_height) {
+        if (!style_applied_normal) {
           widget.obj.css('position', '');
           widget.obj.css('top', '');
           widget.obj.css('bottom', '');
           widget.obj.css('width', '');
           widget.obj.css('margin', '');
           widget.obj.css('padding', '');
-          widget_obj.parent().css('height','');
-          if ( jQuery('#'+widget.clone_id).length > 0 ) jQuery('#'+widget.clone_id).remove();
+          widget_obj.parent().css('height', '');
+          if (jQuery('#' + widget.clone_id).length > 0) jQuery('#' + widget.clone_id).remove();
           style_applied_normal = true;
           style_applied_top = false;
           style_applied_bottom = false;
@@ -183,35 +188,35 @@ function roshenka_sidebar(options) {
       } else {
         var scroll = jQuery(this).scrollTop();
         //console.log('Srcoll: ' + scroll + ' | Trigger top: ' + trigger_top + ' | Trigger bottom: ' + trigger_bottom);
-        if ( scroll + widget.fixed_margin_bottom >= trigger_bottom ) { // fixed bottom
-          if ( !style_applied_bottom ) {
+        if (scroll + widget.fixed_margin_bottom >= trigger_bottom) { // fixed bottom
+          if (!style_applied_bottom) {
             widget.obj.css('position', 'fixed');
             widget.obj.css('top', '');
             widget.obj.css('width', widget_width);
-            if(jQuery('#'+widget.clone_id).length <= 0) widget.obj.before(widget.clone);
+            if (jQuery('#' + widget.clone_id).length <= 0) widget.obj.before(widget.clone);
             style_applied_bottom = true;
             style_applied_top = false;
             style_applied_normal = false;
           }
           widget.obj.css('bottom', scroll + window_height + widget.next_widgets_height - trigger_bottom);
-        } else if ( scroll >= trigger_top ) { // fixed top
-          if ( !style_applied_top ) {
+        } else if (scroll >= trigger_top) { // fixed top
+          if (!style_applied_top) {
             widget.obj.css('position', 'fixed');
             widget.obj.css('top', widget.fixed_margin_top);
             widget.obj.css('bottom', '');
             widget.obj.css('width', widget_width);
-            if(jQuery('#'+widget.clone_id).length <= 0) widget.obj.before(widget.clone);
+            if (jQuery('#' + widget.clone_id).length <= 0) widget.obj.before(widget.clone);
             style_applied_top = true;
             style_applied_bottom = false;
             style_applied_normal = false;
           }
         } else { // normal
-          if ( !style_applied_normal ) {
+          if (!style_applied_normal) {
             widget.obj.css('position', '');
             widget.obj.css('top', '');
             widget.obj.css('bottom', '');
             widget.obj.css('width', '');
-            if(jQuery('#'+widget.clone_id).length > 0) jQuery('#'+widget.clone_id).remove();
+            if (jQuery('#' + widget.clone_id).length > 0) jQuery('#' + widget.clone_id).remove();
             style_applied_normal = true;
             style_applied_top = false;
             style_applied_bottom = false;

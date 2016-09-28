@@ -187,7 +187,7 @@ class roshenka_fixed_widget { // Plugin class
 
     echo '<input type="checkbox" name="'. $widget->get_field_name('roshenka_fixed_widget') .'" value="1" '. checked( $iqfw, 1, false ) .'/>'.PHP_EOL;
 
-    echo '<label for="'. $widget->get_field_id('roshenka_fixed_widget') .'">'. __('Fixed widget', 'roshenka-fixed-widget') .'</label>'.PHP_EOL;
+    echo '<label for="'. $widget->get_field_id('roshenka_fixed_widget') .'">'. __('Fix this widget', 'roshenka-fixed-widget') .'</label>'.PHP_EOL;
 
     echo '</p>'.PHP_EOL;
 
@@ -313,7 +313,7 @@ class roshenka_fixed_widget { // Plugin class
 
     $screen = get_current_screen();
 
-    add_meta_box(self::ID.'-general', __('General Options', 'roshenka-fixed-widget'), array( __CLASS__, 'settings_page_general_box' ), $screen, 'normal');
+    add_meta_box(self::ID.'-general', __('Roshenka Options', 'roshenka-fixed-widget'), array( __CLASS__, 'settings_page_general_box' ), $screen, 'normal');
 
     // add_meta_box(self::ID.'-compatibility', __('Compatibility', 'roshenka-fixed-widget'), array( __CLASS__, 'settings_page_compatibility_box' ), $screen, 'normal');
 

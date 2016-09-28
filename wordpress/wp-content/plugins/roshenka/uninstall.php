@@ -2,7 +2,7 @@
 
 if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) exit(); // if uninstall not called from WordPress exit
 
-$option_name = 'q2w3_fixed_widget';
+$option_name = 'roshenka_fixed_widget';
 
 if ( !is_multisite() ) { // For Single site
 
